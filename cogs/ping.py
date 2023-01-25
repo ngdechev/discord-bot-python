@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-
+import os
 
 class Ping(commands.Cog):
     def __init__(self, client):
@@ -8,7 +8,7 @@ class Ping(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Ping.py is ready!")
+        print(f"{os.path.basename(__file__)} is ready!")
 
     @commands.command()
     async def ping(self, ctx):
