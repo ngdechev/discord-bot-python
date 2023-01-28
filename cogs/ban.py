@@ -15,7 +15,9 @@ class Ban(commands.Cog):
     @commands.has_permissions(kick_members=True)
     async def ban(self, message, member: discord.Member, *, reason="No reason provided"):
         try:
-            await member.ban()
+            await member.ban(reason=reason)
+
+            channel = discord.utils.get(message.guild.channels, name="kick-ban")
 
             ban_embed = discord.Embed(colour=discord.Color.red())
             ban_embed.set_author(name=f"{self.client.user.display_name} || Member Ban", icon_url=f"{self.client.user.display_avatar}")
@@ -25,7 +27,7 @@ class Ban(commands.Cog):
             ban_embed.add_field(name="Reason", value=f"{reason}")
             ban_embed.set_thumbnail(url=f"{member.display_avatar}")
 
-            await message.send(embed=ban_embed)
+            await channel.send(embed=ban_embed)
 
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")

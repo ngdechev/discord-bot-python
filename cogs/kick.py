@@ -17,6 +17,8 @@ class Kick(commands.Cog):
         try:
             await member.kick(reason=reason)
 
+            channel = discord.utils.get(message.guild.channels, name="kick-ban")
+
             kick_embed = discord.Embed(colour=discord.Color.orange())
             kick_embed.set_author(name=f"{self.client.user.display_name} || Member Kick", icon_url=f"{self.client.user.display_avatar}")
             kick_embed.add_field(name="Kicked User", value=f"{member.name}")
@@ -25,7 +27,7 @@ class Kick(commands.Cog):
             kick_embed.add_field(name="Reason", value=f"{reason}")
             kick_embed.set_thumbnail(url=f"{member.display_avatar}")
 
-            await message.send(embed=kick_embed)
+            await channel.send(embed=kick_embed)
 
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
