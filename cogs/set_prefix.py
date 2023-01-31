@@ -33,8 +33,11 @@ class SetPrefix(commands.Cog):
         
     @setprefix.error
     async def setprefix_error(self, message, error):
+        get_guild_prefix = await self.client.db.fetch('SELECT prefix FROM guilds WHERE guild_id = $1', message.guild.id)
+        prefix = get_guild_prefix[0].get("prefix")
+
         if isinstance(error, commands.MissingRequiredArgument):
-            await message.send("Missing required arguments. **Usage: !setprefix <new prefix>**")
+            await message.send(f"Missing required arguments. **Usage: {prefix}setprefix <new prefix>**")
 
         if isinstance(error, commands.MissingPermissions):
             await message.send("You don't have permissions to use this command!")

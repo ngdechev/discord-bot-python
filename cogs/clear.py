@@ -19,8 +19,11 @@ class Clear(commands.Cog):
 
     @clear.error
     async def clear_error(self, message, error):
+        get_guild_prefix = await self.client.db.fetch('SELECT prefix FROM guilds WHERE guild_id = $1', message.guild.id)
+        prefix = get_guild_prefix[0].get("prefix")
+
         if isinstance(error, commands.MissingRequiredArgument):
-            await message.send("Missing required arguments. **Usage: !clear <number of messages to clear>**")
+            await message.send(f"Missing required arguments. **Usage: {prefix}clear <number of messages to clear>**")
         
         if isinstance(error, commands.MissingPermissions):
             await message.send("You don't have permissions to use this command!")
