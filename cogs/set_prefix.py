@@ -30,7 +30,17 @@ class SetPrefix(commands.Cog):
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
             raise
+        
+    @setprefix.error
+    async def setprefix_error(self, message, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await message.send("Missing required arguments. **Usage: !setprefix <new prefix>**")
 
+        if isinstance(error, commands.MissingPermissions):
+            await message.send("You don't have permissions to use this command!")
 
+        if isinstance(error, commands.BotMissingPermissions):
+            await message.send("I don't have permissions! Please check my role and add the required permissions!")
+            
 async def setup(client):
     await client.add_cog(SetPrefix(client))

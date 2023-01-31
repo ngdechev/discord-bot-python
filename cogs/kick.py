@@ -33,6 +33,16 @@ class Kick(commands.Cog):
             print(f"Unexpected {err=}, {type(err)=}")
             raise
 
+    @kick.error
+    async def kick_error(self, message, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await message.send("Missing required arguments. **Usage: !kick @user <reason>**")
 
+        if isinstance(error, commands.MissingPermissions):
+            await message.send("You don't have permissions to use this command!")
+
+        if isinstance(error, commands.BotMissingPermissions):
+            await message.send("I don't have permissions! Please check my role and add the required permissions!")
+            
 async def setup(client):
     await client.add_cog(Kick(client))

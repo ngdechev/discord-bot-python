@@ -17,6 +17,16 @@ class Clear(commands.Cog):
         await message.channel.purge(limit=message_count)
         await message.send(f"{message_count} message's have been deleted!")
 
+    @clear.error
+    async def clear_error(self, message, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await message.send("Missing required arguments. **Usage: !clear <number of messages to clear>**")
+        
+        if isinstance(error, commands.MissingPermissions):
+            await message.send("You don't have permissions to use this command!")
+        
+        if isinstance(error, commands.BotMissingPermissions):
+            await message.send("I don't have permissions! Please check my role and add the required permissions!")
 
 async def setup(client):
     await client.add_cog(Clear(client))
